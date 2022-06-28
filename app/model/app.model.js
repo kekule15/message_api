@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 
 const AppSchema = mongoose.Schema({
-  message: String,
-});
+  productName: String,
+  productDescription: String,
+  productPrice: String,
+},
+  { versionKey: false 
+  },
+  {timestamps: true}
+);
 
-module.exports = mongoose.model("App", AppSchema);
+module.exports = mongoose.model("Products", AppSchema, "Products");

@@ -1,12 +1,14 @@
 
-const App = require("../model/app.model.js");
+const myProduct = require("../model/app.model.js");
 
-// Create and Save a new Message
+// Create and Save a new product
 exports.create = (req, res) => {
-  const message = new App({
-    message: req.body.message,
+  const product = new myProduct({
+    productName: req.body.productName,
+    productDescription: req.body.productDescription,
+    productPrice: req.body.productPrice,
   });
-  message
+  product
     .save()
     .then((data) => {
       res.send(data);
@@ -14,32 +16,37 @@ exports.create = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Message.",
+          err.message || "Some error occurred while creating the product.",
       });
     });
 };
 
-// Retrieve all messages from the database.
+// Retrieve all product from the database.
 exports.findAll = (req, res) => {
-  App.find()
+  myProduct.find()
     .then((data) => {
+      if (!data) {
+        return res.send({
+          message: 'No product available',
+        })
+      }
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving messages.",
+          err.message || "Some error occurred while retrieving product.",
       });
     });
 };
 
-// Find a single message with a messageId
+// Find a single product with a productId
 exports.findOne = (req, res) => {
-  App.findById(req.params.messageId)
+  myProduct.findById(req.params.productId)
     .then((data) => {
       if (!data) {
         return res.status(404).send({
-          message: "Message not found with id " + req.params.messageId,
+          message: "product not found with id " + req.params.productId,
         });
       }
       res.send(data);
@@ -47,28 +54,28 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       if (err.kind === "ObjectId") {
         return res.status(404).send({
-          message: "Message not found with id " + req.params.messageId,
+          message: "product not found with id " + req.params.productId,
         });
       }
       return res.status(500).send({
-        message: "Error retrieving message with id " + req.params.messageId,
+        message: "Error retrieving product with id " + req.params.productId,
       });
     });
 };
 
-// Update a message identified by the messageId in the request
+// Update a product identified by the productId in the request
 exports.update = (req, res) => {
-  App.findByIdAndUpdate(
-    req.params.messageId,
+  myProduct.findByIdAndUpdate(
+    req.params.productId,
     {
-      message: req.body.message,
+      productName: req.body.productName,
     },
     { new: true }
   )
     .then((data) => {
       if (!data) {
         return res.status(404).send({
-          message: "Message not found with id " + req.params.messageId,
+          message: "product not found with id " + req.params.productId,
         });
       }
       res.send(data);
@@ -76,34 +83,34 @@ exports.update = (req, res) => {
     .catch((err) => {
       if (err.kind === "ObjectId") {
         return res.status(404).send({
-          message: "Message not found with id " + req.params.messageId,
+          message: "product not found with id " + req.params.productId,
         });
       }
       return res.status(500).send({
-        message: "Error updating message with id " + req.params.messageId,
+        message: "Error updating product with id " + req.params.productId,
       });
     });
 };
 
-// Delete a message with the specified messageId in the request
+// Delete a product with the specified productId in the request
 exports.delete = (req, res) => {
-  App.findByIdAndRemove(req.params.messageId)
+  myProduct.findByIdAndRemove(req.params.productId)
     .then((data) => {
       if (!data) {
         return res.status(404).send({
-          message: "Message not found with id " + req.params.messageId,
+          message: "product not found with id " + req.params.productId,
         });
       }
-      res.send({ message: "Message deleted successfully!" });
+      res.send({ message: "product deleted successfully!" });
     })
     .catch((err) => {
       if (err.kind === "ObjectId" || err.name === "NotFound") {
         return res.status(404).send({
-          message: "Message not found with id " + req.params.messageId,
+          message: "product not found with id " + req.params.messageId,
         });
       }
       return res.status(500).send({
-        message: "Could not delete message with id " + req.params.messageId,
+        message: "Could not delete product with id " + req.params.messageId,
       });
     });
 };

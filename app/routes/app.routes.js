@@ -3,12 +3,12 @@ module.exports = (app) => {
   
     app.post("/create", App.create);
   
-    app.get("/get-all", App.findAll);
+    app.get("/getAll", App.findAll);
   
-    app.get("/message/:messageId", App.findOne);
+    app.get("/product/:productId", App.findOne);
   
-    app.put("/message/:messageId", App.update);
+    app.put("/product/:productId", App.update);
   
-    app.delete("/message/:messageId", App.delete);
+    app.delete("/product/:productId", App.delete);
   };
   

@@ -1,7 +1,10 @@
+require("dotenv").config(); 
+
+
 const express = require('express');
 const mongoose = require('mongoose');
 
-const uri = "mongodb+srv://kekule15:1d73ttHref@cluster0.6r1sy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = process.env.DATABASE_URLLink;
 mongoose.Promise = global.Promise;
 mongoose.connect(uri,
     {
@@ -14,22 +17,18 @@ mongoose.connect(uri,
     })
     .catch((err) => {
         console.log("Could not connect to the database. Error...", err);
-        process.exit();
+        // process.exit();
     });
 const app = express();
+
+
+
+
+
 
 app.use(express.json());
 require('./app/routes/app.routes.js')(app);
 app.listen(3000, () => {
-    console.log('Started');
-})
-app.get('/', (req, res) => {
-
-
-
-    res.json({ message: 'My home' });
-})
-
-app.get('/users', (req, res) => {
-    res.send('List of users');
+    console.log(`listening on `);
+    
 })
